@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10pt"
+    android:textAlignment="center"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="29dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:padding="10pt"
+            android:text="Start the app with your phone on your knee, facing downward. Complete a full range of motion three times and then stop the recording."
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/pitch"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:text="Pitch"
+            android:textAlignment="center"
+            android:textSize="34sp" />
+
+        <Button
+            android:id="@+id/refreshButton"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="48dp"
+            android:text="Refresh" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    @apply bg-white m-0;
+  }
+
+  .c-main {
+    @apply max-w-4xl mx-auto py-8 px-2;
+  }
+
+  .c-button {
+    @apply mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition-all;
+    &--secondary {
+      @apply bg-red-500 hover:bg-red-700;
+    }
+  }
+}
