@@ -1,0 +1,7 @@
+{
+  "name": "KneeROM",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

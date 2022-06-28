@@ -47,6 +47,57 @@ var GraphQLObjectRecordedEntry = graphql.NewObject(
 	},
 )
 
+/*** TESTING FOR STUDY ***/
+var GraphQLObjectKneeRecording = graphql.NewObject(
+	graphql.ObjectConfig{
+		Name: "PaperKneeRecording",
+		Fields: graphql.Fields{
+			"goniometerTruth": &graphql.Field{
+				Type: graphql.Float,
+				Description: "Truth Value given by the Goniometer.",
+			},
+			"appFrontMeasure": &graphql.Field{
+				Type: graphql.Float,
+				Description: "Measurement by App's Front-facing Mode.",
+			},
+			"appSideMeasure":  &graphql.Field{
+				Type: graphql.Float,
+				Description: "Measurement by App's Side-facing Mode.",
+			},
+		},
+	},
+)
+
+var GraphQLObjectPaperRecordingFull = graphql.NewObject(
+	graphql.ObjectConfig{
+		Name: "PaperRecordingFull",
+		Fields: graphql.Fields{
+			"mongoId": &graphql.Field{
+				Type: graphql.String,
+				Description: "The ID used by MongoDB.",
+			},
+			"patientHeight": &graphql.Field{
+				Type: graphql.Float,
+				Description: "The height of the patient in inches.",
+			},
+			"patientWeight": &graphql.Field{
+				Type: graphql.Float,
+				Description: "The weight of the patient in pounds.",
+			},
+			"patientKneeLeft": &graphql.Field{
+				Type: GraphQLObjectKneeRecording,
+				Description: "The recorded measurements of left knee of the patient.",
+			},
+			"patientKneeRight": &graphql.Field{
+				Type: GraphQLObjectKneeRecording,
+				Description: "The recorded measurements of left knee of the patient.",
+			},
+		},
+	},
+)
+
+/*** END TESTING FOR STUDY ***/
+
 var AccountTypeEnum = graphql.NewEnum(
 	graphql.EnumConfig{
 		Name:        "AccountType",
@@ -136,6 +187,20 @@ var RootMutationObject = graphql.NewObject(
 				},
 				Resolve: createNewPatientAccountResolver,
 			},
+			"createNewStudyEntry": &graphql.Field{
+				Type: GraphQLObjectPaperRecordingFull,
+				Args: graphql.FieldConfigArgument{
+					"patientHeight":  &graphql.ArgumentConfig{ Type: graphql.NewNonNull(graphql.Float) },
+					"patientWeight":  &graphql.ArgumentConfig{ Type: graphql.NewNonNull(graphql.Float) },
+					"leftKneeGoniometerTruth":  &graphql.ArgumentConfig{ Type: graphql.NewNonNull(graphql.Float) },
+					"leftKneeAppFrontMeasure":  &graphql.ArgumentConfig{ Type: graphql.NewNonNull(graphql.Float) },
+					"leftKneeAppSideMeasure":  &graphql.ArgumentConfig{ Type: graphql.NewNonNull(graphql.Float) },
+					"rightKneeGoniometerTruth":  &graphql.ArgumentConfig{ Type: graphql.NewNonNull(graphql.Float) },
+					"rightKneeAppFrontMeasure":  &graphql.ArgumentConfig{ Type: graphql.NewNonNull(graphql.Float) },
+					"rightKneeAppSideMeasure":  &graphql.ArgumentConfig{ Type: graphql.NewNonNull(graphql.Float) },
+				},
+				Resolve: createNewStudyEntry,
+			},
 		},
 	},
 )
@@ -175,6 +240,10 @@ var	RootFieldObject = graphql.Fields{
 			"sessionId":       &graphql.ArgumentConfig{ Type: graphql.NewNonNull(graphql.String) },
 		},
 		Resolve: getPractitionerAccountsPatients,
+	},
+	"getAllStudyEntries": &graphql.Field{
+		Type: graphql.NewList(GraphQLObjectPaperRecordingFull),
+		Resolve: getAllStudyEntries,
 	},
 	"ping": &graphql.Field{
 		Type: graphql.String,

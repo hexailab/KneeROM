@@ -281,3 +281,34 @@ func IsPatientUnderPractitioner(input IsPatientUnderPractitionerInput) bool {
 
 	return err == nil
 }
+
+
+/*** CODE FOR JULY 1st TEST ***/
+type MongoObjectKnee struct {
+	GoniometerTruth float64 `bson:"goniometer_truth"  json:"goniometerTruth"`
+	AppFrontMeasure float64 `bson:"app_front_measure" json:"appFrontMeasure"`
+	AppSideMeasure  float64 `bson:"app_side_measure"  json:"appSideMeasure"`
+}
+
+type MongoObjectPaperRecordedEntry struct {
+	MongoID       primitive.ObjectID       `bson:"_id"                json:"mongoId"`
+	PatientHeight float64				   `bson:"patient_height"     json:"patientHeight"`
+	PatientWeight float64				   `bson:"patient_weight"     json:"patientWeight"`
+	LeftKnee      MongoObjectKnee          `bson:"patient_knee_left"  json:"patientKneeLeft"`
+	RightKnee     MongoObjectKnee          `bson:"patient_knee_right" json:"patientKneeRight"`
+}
+
+type MongoObjectPaperRecordedEntryInput struct {
+	Height                   float64 `json:"patientHeight"`
+	Weight                   float64 `json:"patientWeight"`
+	LeftKneeGoniometerTruth  float64 `json:"leftKneeGoniometerTruth"`
+	LeftKneeAppFrontMeasure  float64 `json:"leftKneeAppFrontMeasure"`
+	LeftKneeAppSideMeasure   float64 `json:"leftKneeAppSideMeasure""`
+	RightKneeGoniometerTruth float64 `json:"rightKneeGoniometerTruth"`
+	RightKneeAppFrontMeasure float64 `json:"rightKneeAppFrontMeasure"`
+	RightKneeAppSideMeasure  float64 `json:"rightKneeAppSideMeasure"`
+}
+
+func CreateAndSaveNewPaperRecordedEntry() {
+
+}

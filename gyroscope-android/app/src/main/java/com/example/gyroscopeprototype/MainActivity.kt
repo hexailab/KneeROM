@@ -1,5 +1,6 @@
 package com.example.gyroscopeprototype
 
+import android.R
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -12,38 +13,23 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlin.math.abs
 import kotlin.math.floor
 
+
 class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
+    private lateinit var apolloServerManager: ApolloServerManager
+
     private var mRotation: Sensor? = null
     private var mMagnetic: Sensor? = null
-
     private var mGravity = FloatArray(3)
     private var mGeomagnetic = FloatArray(3)
 
     private var pitch = 0.0
     private var roll = 0.0
-
     private var minPitch = 0.0
     private var maxPitch = 0.0
     private var pitchRange = 0.0
 
     private var state = 0
-
-    /*
-     *
-     * Eventual Needs:
-     *   - Create internal GitHub server for easy collaboration. (Done)
-     *   - Create AWS server for access. (Done)
-     *   - Create REST API layer with MongoDB backend. (Done)
-     *   - Individual sign-in for patient / doctor. TODO
-     *   - Doctor/Patient pairing request. TODO
-     *   - Interpret data, give recommendations & informatics TODO
-     *          (i.e. line graph and projected recovery time)
-     *
-     * MORE RECENT TODO:
-     *   - Create a slideshow which explains the backend/frontend connection.
-     *   - Create screen-based flow diagram in Adobe XD, also for presenting.
-     */
 
     fun toggleState() {
         if (state == 0) {
@@ -59,6 +45,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
+
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -66,6 +54,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         mRotation = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         mMagnetic = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+
+        apolloServerManager = ApolloServerManager()
+        apolloServerManager.connectToMainServer()
 
         findViewById<Button>(R.id.refreshButton).text = "Start"
         findViewById<Button>(R.id.refreshButton).setOnClickListener {

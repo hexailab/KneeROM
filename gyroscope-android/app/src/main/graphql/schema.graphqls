@@ -1,0 +1,89 @@
+type RootQuery {
+  getPatientAccountDetails("" sessionId: String!): Patient
+
+  getPatientsUnderPractitioner("" sessionId: String!): [String]
+
+  getPractitionerAccountDetails("" sessionId: String!): Practitioner
+
+  getROMEntries("" sessionId: String!, "" patientId: String, "" dateRangeBegin: DateTime, "" dateRangeEnd: DateTime): [RecordedEntry]
+
+  ping: String
+}
+
+type Practitioner {
+  emailAddress: String
+
+  fullName: String
+
+  institution: String
+
+  mongoId: String
+
+  passwordHash: String
+
+  sessionIdHash: String
+
+  sessionIdPlain: String
+}
+
+type LoginResponse {
+  sessionId: String
+}
+
+"""
+The `DateTime` scalar type represents a DateTime. The DateTime is serialized as an RFC 3339 quoted string
+"""
+scalar DateTime
+
+type Patient {
+  emailAddress: String
+
+  fullName: String
+
+  mongoId: String
+
+  passwordHash: String
+
+  practitionerId: String
+
+  sessionIdHash: String
+
+  sessionIdPlain: String
+}
+
+type RecordedEntry {
+  datetimeRecorded: DateTime
+
+  jointId: JointType
+
+  mongoId: String
+
+  patientId: String
+
+  rangeOfMotion: Float
+}
+
+enum JointType {
+  JOINT_TYPE_KNEE
+}
+
+type RootMutation {
+  createNewPatientAccount("" password: String!, "" sessionId: String!, "" fullName: String!, "" emailAddress: String!): Practitioner
+
+  createNewPractitionerAccount("" fullName: String!, "" institution: String!, "" emailAddress: String!, "" password: String!): Practitioner
+
+  createNewROMEntry("" datetimeRecorded: DateTime!, "" jointId: JointType!, "" sessionId: String!, "" rangeOfMotion: Float!): RecordedEntry
+
+  loginToAccount("" email: String!, "" password: String!, "" accountType: AccountType!): LoginResponse
+}
+
+enum AccountType {
+  ACCOUNT_TYPE_PATIENT
+
+  ACCOUNT_TYPE_PRACTITIONER
+}
+
+schema {
+  query: RootQuery
+  mutation: RootMutation
+}

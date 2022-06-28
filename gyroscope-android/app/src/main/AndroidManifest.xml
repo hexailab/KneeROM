@@ -3,9 +3,13 @@
     package="com.example.gyroscopeprototype">
 
     <uses-feature android:name="android.hardware.sensor.gyroscope" android:required="true" />
+    <uses-permission android:name="android.permission.INTERNET" android:required="true" />
+
+    <!-- android:usesClearTextTraffic should only be on in Debug. -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"

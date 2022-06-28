@@ -211,3 +211,45 @@ var getPractitionerAccountsPatients = func(params graphql.ResolveParams) (interf
 	// For now, we are hard-coding this. This is obviously not how this will work in production.
 	return []string{"625d6b075b86fa89f3749cb9"}, nil
 }
+
+var getAllStudyEntries = func(params graphql.ResolveParams) (interface{}, error) {
+	var resp []MongoObjectPaperRecordedEntry
+
+	paperCollection := appVariables.MongoClient.Database(MongoClientDatabaseTitle).Collection("paperCollections")
+	cursor, err := paperCollection.Find(appVariables.MongoContext, &bson.M{})
+	if err != nil {
+		return nil, err
+	}
+
+	cursor.All(appVariables.MongoContext, &resp)
+	return resp, nil
+}
+
+var createNewStudyEntry = func(params graphql.ResolveParams) (interface{}, error) {
+	var leftKnee = MongoObjectKnee{
+		GoniometerTruth: params.Args["leftKneeGoniometerTruth"].(float64),
+		AppFrontMeasure: params.Args["leftKneeAppFrontMeasure"].(float64),
+		AppSideMeasure:  params.Args["leftKneeAppSideMeasure"].(float64),
+	}
+
+	var rightKnee = MongoObjectKnee{
+		GoniometerTruth: params.Args["rightKneeGoniometerTruth"].(float64),
+		AppFrontMeasure: params.Args["rightKneeAppFrontMeasure"].(float64),
+		AppSideMeasure:  params.Args["rightKneeAppSideMeasure"].(float64),
+	}
+
+	var newStudyEntry = MongoObjectPaperRecordedEntry{
+		MongoID:       primitive.NewObjectID(),
+		PatientHeight: params.Args["patientHeight"].(float64),
+		PatientWeight: params.Args["patientWeight"].(float64),
+		LeftKnee:      leftKnee,
+		RightKnee:     rightKnee,
+	}
+
+	paperCollection := appVariables.MongoClient.Database(MongoClientDatabaseTitle).Collection("paperCollections")
+
+	if _, err := paperCollection.InsertOne(appVariables.MongoContext, newStudyEntry); err != nil {
+		return nil, err
+	}
+	return newStudyEntry, nil
+}
