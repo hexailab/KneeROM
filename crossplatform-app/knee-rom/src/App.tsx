@@ -34,10 +34,17 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import React from "react";
+import ProgressStatusComponent from "./components/ProgressStatusComponent";
+import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client";
 
 setupIonicReact();
 
 const App: React.FC = () => {
+  const client = new ApolloClient({
+    uri: 'http://54.146.48.48:8080/graphql',
+    cache: new InMemoryCache()
+  });
+
   const [heightInches, setHeightInches] = React.useState(0);
   const [weightPounds, setWeightPounds] = React.useState(0);
   const [truthLeftKnee, setTruthLeftKnee] = React.useState(0);
@@ -46,29 +53,42 @@ const App: React.FC = () => {
   const [appRightKnee, setAppRightKnee] = React.useState(0);
   const [currentTab, setCurrentTab] = React.useState(0);
 
+  const resetApp = () => {
+    setHeightInches(0);
+    setWeightPounds(0);
+    setTruthRightKnee(0);
+    setTruthLeftKnee(0);
+    setAppLeftKnee(0);
+    setAppRightKnee(0);
+    setCurrentTab(0);
+  }
+
   return <IonApp>
-        {currentTab == 0 ?
-          <Tab1 onFinish={ev => {
-            setHeightInches(ev.heightInches);
-            setWeightPounds(ev.weightPounds);
-            setTruthLeftKnee(ev.truthValueLeft);
-            setTruthRightKnee(ev.truthValueRight);
-            setCurrentTab(1);
-          }}/>
-          : null
-        }
-        {currentTab == 1 ?
-          <Tab2 type={0} onFinish={ev => {
-            setAppLeftKnee(ev.leftKneeRange);
-            setAppRightKnee(ev.rightKneeRange);
-            setCurrentTab(2);
-          }}/>
-          : null
-        }
-        {currentTab == 2 ?
-          <Tab3 specs={{heightInches, weightPounds, truthLeftKnee, truthRightKnee, appLeftKnee, appRightKnee}}/>
-          : null
-        }
+    <ApolloProvider client={client}>
+      {currentTab == 0 ?
+        <Tab1 onFinish={ev => {
+          setHeightInches(ev.heightInches);
+          setWeightPounds(ev.weightPounds);
+          setTruthLeftKnee(ev.truthValueLeft);
+          setTruthRightKnee(ev.truthValueRight);
+          setCurrentTab(1);
+        }}/>
+        : null
+      }
+      {currentTab == 1 ?
+        <Tab2 type={0} onFinish={ev => {
+          setAppLeftKnee(ev.leftKneeRange);
+          setAppRightKnee(ev.rightKneeRange);
+          setCurrentTab(2);
+        }}/>
+        : null
+      }
+      {currentTab == 2 ?
+        <Tab3 specs={{heightInches, weightPounds, truthLeftKnee, truthRightKnee, appLeftKnee, appRightKnee}} onFinish={resetApp}/>
+        : null
+      }
+      <ProgressStatusComponent id={currentTab}/>
+    </ApolloProvider>
   </IonApp>;
 };
 

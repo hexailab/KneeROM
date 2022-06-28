@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.6.9",
     "@capacitor/android": "3.6.0",
     "@capacitor/app": "1.1.1",
     "@capacitor/core": "3.6.0",
@@ -24,6 +25,7 @@
     "@types/react-dom": "^16.9.10",
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
+    "graphql": "^16.5.0",
     "ionicons": "^5.4.0",
     "native-run": "^1.6.0",
     "react": "^17.0.1",
@@ -51,7 +53,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
     "eject": "react-scripts eject",
-    "android-live": "adb reverse tcp:8100 tcp:8100 && ionic capacitor run android -l --verbose --target R5CR40X727L"
+    "android-live": "adb reverse tcp:8100 tcp:8100 && ionic cap run android -l --verbose --target R5CR40X727L"
   },
   "eslintConfig": {
     "extends": [

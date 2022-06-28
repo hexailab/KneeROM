@@ -1,4 +1,4 @@
-import {IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar} from '@ionic/react';
+import {IonContent, IonHeader, IonPage, IonTitle, IonToolbar} from '@ionic/react';
 import './Tab2.css';
 import GoniometerComponent, {IGoniometerProps} from "../components/GoniometerComponent";
 import React from "react";
